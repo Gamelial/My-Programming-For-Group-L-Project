@@ -74,7 +74,7 @@ if(isset($_POST["submit"])){
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="form3Example1c" name="name" class="form-control" />
-                      <label class="form-label" for="form3Example1c">Your Name</label>
+                      <label class="form-label" for="form3Example1c">Name</label>
                     </div>
                   </div>
 
@@ -82,7 +82,7 @@ if(isset($_POST["submit"])){
                     <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="email" id="form3Example3c" name="email" class="form-control" />
-                      <label class="form-label" for="form3Example3c">Your Email</label>
+                      <label class="form-label" for="form3Example3c">Email</label>
                     </div>
                   </div>
 
