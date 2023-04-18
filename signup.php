@@ -3,12 +3,26 @@
 include "conn.php";
 
 
-
+if (isset($data)){
+if($data['users_id'] != $random_number){
+  $random_number = rand(100000, 999999);
+}
+}else{
+}
 if(isset($_POST["submit"])){
-    $name = $_POST["name"];
+  $name = $_POST["name"];
+  $random_number = rand(100000, 999999);
     $email = $_POST["email"];
     $pass = md5($_POST["pass"]);
     $rpass = md5($_POST["rpass"]);
+
+    $select = "Select * from `users` where email = '$email'";
+    $r = mysqli_query($conn, $select);
+    $data = mysqli_fetch_assoc($r);
+
+    if(isset($data)){
+      echo "User already exists";
+    }else{
    
     if(isset($_POST["checked"])){
         $checked = $_POST["checked"];
@@ -17,10 +31,10 @@ if(isset($_POST["submit"])){
     }
     if(empty($pass)){
         echo "<div class='alert alert-danger' role='alert'><b>Warning!</b> Password cannot be empty.</div>";
-    }
-    if($pass == $rpass){
-        $sql = "insert into `signup`(name, email, pass, agreed, date)
-      values('$name','$email', '$pass', '$checked', CURDATE())";
+    }else if($pass == $rpass and !empty($name)){
+        
+        $sql = "insert into `users`(users_id, name, email, pass, agreed, date)
+      values('$random_number','$name','$email', '$pass', '$checked', CURDATE())";
       $result = mysqli_query($conn, $sql);
       if($result){
     // echo " Registered Successfully";
@@ -30,9 +44,10 @@ if(isset($_POST["submit"])){
     die(mysqli_error($conn));
   }
     }else{
-        echo '<div class="alert alert-danger" role="alert"> <b>Warning!</b> Password not the same.</div>';
+        echo '<div class="alert alert-danger" role="alert"> <b>Warning!</b> Ensure Passwords are the same.</div>';
 
     }
+  }
     
 }
 ?>
@@ -73,7 +88,7 @@ if(isset($_POST["submit"])){
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="form3Example1c" name="name" class="form-control" />
+                      <input type="text" id="form3Example1c" name="name" class="form-control" required />
                       <label class="form-label" for="form3Example1c">Name</label>
                     </div>
                   </div>
@@ -81,7 +96,7 @@ if(isset($_POST["submit"])){
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="email" id="form3Example3c" name="email" class="form-control" />
+                      <input type="email" id="form3Example3c" name="email" class="form-control" required />
                       <label class="form-label" for="form3Example3c">Email</label>
                     </div>
                   </div>
@@ -89,7 +104,7 @@ if(isset($_POST["submit"])){
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="password" id="form3Example4c" name="pass" class="form-control" />
+                      <input type="password" id="form3Example4c" name="pass" class="form-control" required />
                       <label class="form-label" for="form3Example4c">Password</label>
                     </div>
                   </div>
@@ -97,22 +112,26 @@ if(isset($_POST["submit"])){
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="password" id="form3Example4cd" name="rpass" class="form-control" />
+                      <input type="password" id="form3Example4cd" name="rpass" class="form-control" required/>
                       <label class="form-label" for="form3Example4cd">Repeat your password</label>
                     </div>
                   </div>
 
-                  <div class="form-check d-flex justify-content-center mb-5">
+                  <div class="form-check d-flex justify-content-center mb-3">
                       <label class="form-check-label" for="form2Example3">
                           I agree all statements in <a href="#!">Terms of service</a>
                           <input class="form-check-input" value="checked" style="margin: 8px;" type="checkbox" name="checked" value="" id="form2Example3c" />
                     </label>
                   </div>
 
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                  <div class="d-flex justify-content-center mx-4 mb-1 mb-lg-2">
                     <button type="submit" name="submit" class="btn btn-primary btn-lg">Register</button>
                   </div>
-
+                  <div class="form-check d-flex justify-content-center mb-1">
+                      <label class="form-check-label" for="form2Example3">
+                           Have an account? <a href="login.php">Log In</a>
+                    </label>
+                  </div>
                 </form>
 
               </div>
